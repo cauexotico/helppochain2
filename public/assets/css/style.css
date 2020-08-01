@@ -1,0 +1,100 @@
+@font-face {
+    font-family: Gordita;
+    src: url(../fonts/GorditaRegular.woff);
+    font-weight: 400;
+}
+@font-face {
+    font-family: Gordita;
+    src: url(../fonts/GorditaMedium.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: icons;
+    src: url(../fonts/icons.woff);
+}
+
+html{
+    font-size: 15px;
+}
+
+body{
+    font-family: Gordita, Arial, Helvetica, sans-serif !important;
+    background-color: #f7faff;
+}
+
+.sidebar-helppo h3 a {
+    color:#31343b;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.navbar-helppo {
+    height: 3.2rem;
+    background-color: #557cf2;
+}
+.navbar-helppo .logo-helppo{
+    height: 32px;
+    width:32px;
+}
+
+.sidebar-helppo .sidebar-helppo-subitens ul {
+    padding: 0rem;
+    list-style: none;
+    margin-top: 1rem;
+}
+.sidebar-helppo .sidebar-helppo-subitens ul li{
+    border-radius: 50px;
+    color:#4e5159 !important;
+    padding: .5rem .2rem;
+    margin-left: 1rem;
+    margin-top: .6rem;
+    transition: ease .3;
+}
+.sidebar-helppo .sidebar-helppo-subitens ul li:hover,
+.sidebar-helppo .sidebar-helppo-subitens ul .active{
+    background: #f0f4ff;
+}
+.sidebar-helppo .sidebar-helppo-subitens ul li a::before{
+    font-family: icons;
+    content: "\f11c";
+    transform: rotate(90deg);
+    display: inline-block;
+    margin-right: 4px;
+    font-size: 14px;
+    color: #dfe5f2;
+}
+.sidebar-helppo .sidebar-helppo-subitens ul li a{
+    font-size: 1rem;
+    color: #4e5159;
+    font-weight: 700;
+    text-transform: capitalize;
+    display: block;
+    margin-left: 1rem;
+}
+.sidebar-helppo .sidebar-helppo-subitens ul li:hover a{
+    text-decoration: none;
+}
+.sidebar-helppo .sidebar-helppo-subitens ul .active a{
+    color:#557cf2 !important;
+}
+
+.card-helppo {
+    background: #fff;
+    border-radius: .5rem;
+    box-shadow: 0 0 1px 0 rgb(59 89 178 / 20%), 0 4px 14px rgb(59 89 178 / 9%)
+}
+
+.card-helppo .card-title{
+    font-weight: 600;
+    position: relative;
+}
+
+.card-helppo .card-title small {
+    font-size: 1rem;
+    color: #b1b6c7;
+    margin-bottom: .4rem;
+    position: absolute;
+    top: calc(1.75rem/3);
+    margin-left: .4rem;
+}
