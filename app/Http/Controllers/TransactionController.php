@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Blockchain;
 
-class BlockchainController extends Controller
+class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.

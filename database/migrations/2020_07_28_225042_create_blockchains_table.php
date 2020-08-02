@@ -15,6 +15,7 @@ class CreateBlockchainsTable extends Migration
     {
         Schema::create('blockchains', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 64);
             $table->string('version',20);
             $table->integer('difficulty');
             $table->enum('type',['solo','shared']);

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Blockchain {{$blockchain->id}}
+    #{{$blockchain->id}} {{$blockchain->name}}
 @endsection
 
 @section('breadcrumb')
@@ -16,9 +16,10 @@
 @section('content')
 
     <div class="col-12 card-helppo p-3">
-        <h3>Blockchain {{$blockchain->id}}</h3>
+        <h3>Blockchain #{{$blockchain->id}} {{$blockchain->name}}</h3>
         <div class="infos">
             ID: {{$blockchain->id}} <br>
+            Name: {{$blockchain->name}} <br>
             Version: {{$blockchain->version}} <br>
             Difficulty: {{$blockchain->difficulty}} <br>
             Type: {{$blockchain->type}} <br>

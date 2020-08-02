@@ -68,16 +68,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {   
-        $transactions = collect([]);
-
-        $blocks = $project->blockchain->blocks;
-        foreach($blocks as $block){
-            foreach($block->transactions as $transaction) {
-                $transactions->push($transaction);
-            }
-        }
-
-        return view('projects.show', compact(['project','transactions']));
+        return view('projects.show', compact('project'));
     }
 
     /**

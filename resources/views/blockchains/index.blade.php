@@ -21,6 +21,7 @@
             <thead>
                 </tr>
                     <th scope="col">#</th>
+                    <th scope="col">Name</th>
                     <th scope="col">Version</th>
                     <th scope="col">Difficulty</th>
                     <th scope="col">Type</th>
@@ -31,6 +32,7 @@
                 @foreach($blockchains as $blockchain)
                     <tr>
                         <th scope="row">{{$blockchain->id}}</th>
+                        <td>{{$blockchain->name}}</td>
                         <td>{{$blockchain->version}}</td>
                         <td>{{$blockchain->difficulty}}</td>
                         <td>{{$blockchain->type}}</td>

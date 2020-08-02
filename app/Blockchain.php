@@ -9,7 +9,7 @@ use App\Block;
 class Blockchain extends Model
 {
     protected $fillable = [
-        'version', 'difficulty', 'type'
+        'name', 'version', 'difficulty', 'type'
     ];
 
     /**
@@ -22,6 +22,7 @@ class Blockchain extends Model
     public static function createBlockchain($type, $difficulty)
     {
         $blockchain = [
+            'name' => Blockchain::createBlockchainName(),
             'version' => 'v1',
             'difficulty' => $difficulty,
             'type' => $type,
@@ -31,6 +32,24 @@ class Blockchain extends Model
         $genesisBlock = Block::createGenesisBlock($blockchain);
 
         return $blockchain;
+    }
+
+    /**
+     * Create blockchain name
+     *
+     * @param string $name
+     * @return bool
+     */
+    public static function createBlockchainName()
+    {
+        $generator = \Nubs\RandomNameGenerator\All::create();
+        $name = $generator->getName();
+
+        do {
+            $name = $generator->getName();
+        } while (!Blockchain::blockchainNameExists($name));
+
+        return $name;
     }
 
     /**
@@ -49,6 +68,23 @@ class Blockchain extends Model
         $block = $block->latest()->first();
 
         return $block;
+    }
+
+    /**
+     * Check if blockchain name already exists.
+     *
+     * @param string $name
+     * @return bool
+     */
+    public static function blockchainNameExists($name)
+    {
+        $blockchain = Blockchain::where('name', $name);
+
+        if ($blockchain) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
