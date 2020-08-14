@@ -43,7 +43,7 @@
           <div class="sidebar-helppo-subitens blockchains">
             <ul>
               @foreach($dashboardBlockchains as $blockchain)
-                <li class="{{ request()->is('blockchains/' . $blockchain->id . '*') ? 'active' : '' }}"><a href="{{route('blockchains.show',$blockchain->id)}}">{{$blockchain->id}}</a></li>
+            <li class="{{ request()->is('blockchains/' . $blockchain->id . '*') ? 'active' : '' }}"><a href="{{route('blockchains.show',$blockchain->id)}}">{{$blockchain->id}} {{$blockchain->name}}</a></li>
               @endforeach
             </ul>
           </div>

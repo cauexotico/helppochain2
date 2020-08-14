@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Block extends Model
 {
     protected $fillable = [
-        'blockchain_id', 'nonce', 'previous_hash', 'hash', 'status'
+        'blockchain_id', 'miner', 'nonce', 'previous_hash', 'hash', 'status'
     ];
 
     /**
@@ -19,6 +19,7 @@ class Block extends Model
     {   
         $genesisBlock = [
             'blockchain_id' => $blockchain->id,
+            'miner' => null,
             'nonce' => '0',
             'previous_hash' => 'genesis',
             'hash' => '',
@@ -61,6 +62,10 @@ class Block extends Model
      */
     public function mineBlock()
     {
+        if ($this->status == 'mined') {
+            return $this;
+        }
+
         $hash = $this->createValidHash();
 
         $this->nonce = $hash['nonce'];

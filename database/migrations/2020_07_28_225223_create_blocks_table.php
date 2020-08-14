@@ -16,6 +16,7 @@ class CreateBlocksTable extends Migration
         Schema::create('blocks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('blockchain_id');
+            $table->unsignedBigInteger('miner')->nullable();
             $table->unsignedBigInteger('nonce');
             $table->char('previous_hash', 64);
             $table->char('hash', 64);
@@ -24,6 +25,7 @@ class CreateBlocksTable extends Migration
             $table->softDeletes();
 
             $table->foreign('blockchain_id')->references('id')->on('blockchains')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('miner')->references('id')->on('projects')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 

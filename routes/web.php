@@ -21,3 +21,6 @@ Route::resource('blockchains', 'BlockchainController');
 
 Route::resource('projects', 'ProjectController');
 Route::post('projects/{project}/transactions/add', 'ProjectController@createTransaction');
+
+Route::get('blocks/{block}/mine', 'BlockController@mine')
+    ->name('block.mine');

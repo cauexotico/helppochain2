@@ -14,7 +14,6 @@
 @endsection
 
 @section('content')
-
     <div class="col-12 card-helppo p-3">
         <h3>Blockchain #{{$blockchain->id}} {{$blockchain->name}}</h3>
         <div class="infos">
@@ -47,7 +46,11 @@
                         <td>{{$block->status}}</td>
                         <td>{{$block->getShortnedPreviousHash()}}</td>
                         <td>{{$block->getShortnedHash()}}</td>
-                        <td><a href="#">Mine</a></td>
+                        <td>
+                            @if($block->status == 'not_mined')
+                                <a href="{{route('block.mine', $block->id)}}">Mine</a>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

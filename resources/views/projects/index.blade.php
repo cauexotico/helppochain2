@@ -33,7 +33,7 @@
             <tbody>
                 @foreach($projects as $project)
                     <tr>
-                        <th scope="row">{{$project->id}}</th>
+                        <th scope="row"><a href="{{route('projects.show',$project->id)}}">{{$project->id}}</a></th>
                         <td><a href="{{route('blockchains.show',$project->blockchain_id)}}">{{$project->blockchain->name}}</a></td>
                         <td>{{$project->name}}</td>
                         <td>{{$project->blockchain->difficulty}}</td>

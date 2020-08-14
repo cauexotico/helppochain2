@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Project;
+use App\Services\KeypairService;
 
 class ProjectController extends Controller
 {
@@ -44,12 +45,15 @@ class ProjectController extends Controller
             'difficulty' => 'required|numeric|min:1|max:15'
         ]);
 
+        $service = new KeypairService();
+        $keypair = $service->createKeypair();
+
         $project = [
             'blockchain_id' => Project::findOrCreateBlockchain($request->type, $request->difficulty)->id,
             'name' => $request->name,
             'type' => $request->type,
-            'api_key' => 'api_key',
-            'api_secret' => 'api_secret',
+            'api_key' => $service->getPublicKey($keypair),
+            'api_secret' => $service->getSecretKey($keypair),
             'start_version' => 'v1',
             'current_version' => 'v1',
         ];

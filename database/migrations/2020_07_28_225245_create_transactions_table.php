@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('block_id');
             $table->unsignedBigInteger('project_id');
             $table->char('hash', 64);
-            $table->json('data');
+            $table->string('data', 255);
             $table->timestamps();
             $table->softDeletes();
 
