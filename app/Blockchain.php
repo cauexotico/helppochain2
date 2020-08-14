@@ -23,7 +23,7 @@ class Blockchain extends Model
     {
         $blockchain = [
             'name' => Blockchain::createBlockchainName(),
-            'version' => 'v1',
+            'version' => getenv('HELPPOCHAIN_CURRENT_VERSION'),
             'difficulty' => $difficulty,
             'type' => $type,
         ];
@@ -69,7 +69,7 @@ class Blockchain extends Model
 
         return $block;
     }
-
+    
     /**
      * Check if blockchain name already exists.
      *

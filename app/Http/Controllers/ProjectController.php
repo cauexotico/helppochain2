@@ -52,10 +52,10 @@ class ProjectController extends Controller
             'blockchain_id' => Project::findOrCreateBlockchain($request->type, $request->difficulty)->id,
             'name' => $request->name,
             'type' => $request->type,
-            'api_key' => $service->getPublicKey($keypair),
-            'api_secret' => $service->getSecretKey($keypair),
-            'start_version' => 'v1',
-            'current_version' => 'v1',
+            'public_key' => $service->getPublicKey($keypair),
+            'secret_key' => $service->getSecretKey($keypair),
+            'start_version' => getenv('HELPPOCHAIN_CURRENT_VERSION'),
+            'current_version' => getenv('HELPPOCHAIN_CURRENT_VERSION'),
         ];
         
         Project::create($project);

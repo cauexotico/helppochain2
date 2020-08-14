@@ -18,8 +18,8 @@ class CreateProjectsTable extends Migration
             $table->unsignedBigInteger('blockchain_id');
             $table->char('name',100);
             $table->enum('type',['solo','shared']);
-            $table->string('api_key', 64);
-            $table->string('api_secret', 64);
+            $table->string('public_key', 64);
+            $table->string('secret_key', 64);
             $table->string('start_version', 20);
             $table->string('current_version', 20);
             $table->timestamps();

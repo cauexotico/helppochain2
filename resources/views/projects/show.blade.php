@@ -19,11 +19,11 @@
         <div class="infos">
             <div class="form-group">
                 <label for="api_key">API Key</label>
-                <input type="text" class="form-control" id="api_key" placeholder="API Key" value="{{$project->api_key}}">
+                <input type="text" class="form-control" id="api_key" placeholder="API Key" value="{{$project->public_key}}">
             </div>
             <div class="form-group">
                 <label for="api_secret">API Secret</label>
-                <input type="text" class="form-control" id="api_secret" placeholder="API Secret" value="{{$project->api_secret}}">
+                <input type="text" class="form-control" id="api_secret" placeholder="API Secret" value="{{$project->secret_key}}">
             </div>
             <p>Blockchain: <a href="{{route('blockchains.show',$project->blockchain->id)}}">{{$project->blockchain->id}}</a></p>
             <p>Difficulty: {{$project->blockchain->difficulty}}</p>

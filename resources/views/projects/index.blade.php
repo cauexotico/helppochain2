@@ -38,8 +38,8 @@
                         <td>{{$project->name}}</td>
                         <td>{{$project->blockchain->difficulty}}</td>
                         <td>{{$project->type}}</td>
-                        <td>{{$project->api_key}}</td>
-                        <td>{{$project->api_secret}}</td>
+                        <td>{{$project->public_key}}</td>
+                        <td>{{$project->secret_key}}</td>
                         <td>{{$project->start_version}}</td>
                         <td>{{$project->current_version}}</td>
                     </tr>

@@ -10,7 +10,7 @@ use App\Transaction;
 class Project extends Model
 {
     protected $fillable = [
-        'name', 'type', 'blockchain_id', 'api_key', 'api_secret', 'start_version', 'current_version'
+        'name', 'type', 'blockchain_id', 'public_key', 'secret_key', 'start_version', 'current_version'
     ];
 
     /**
@@ -28,7 +28,7 @@ class Project extends Model
                                 ->inRandomOrder()
                                 ->first();
         
-        if (!$blockchain) {
+        if (!$blockchain || $type == 'solo') {
             $blockchain = Blockchain::createBlockchain($type, $difficulty);
         }
 

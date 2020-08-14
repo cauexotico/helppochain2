@@ -27,8 +27,8 @@ class Transaction extends Model
         $project = Project::where('id', $projectId)->first();
 
         $keypairService = new KeypairService();
-        $keypair = $keypairService->keypairFromKeys($project->api_key, $project->api_secret);
-        $data = $keypairService->cryptMessage($data, hex2bin($project->api_key));
+        $keypair = $keypairService->keypairFromKeys($project->public_key, $project->secret_key);
+        $data = $keypairService->cryptMessage($data, hex2bin($project->public_key));
         
         $transaction = [
             'project_id' => $projectId,
@@ -48,7 +48,7 @@ class Transaction extends Model
     public function getDataAttribute($value)
     {
         $keypairService = new KeypairService();
-        $keypair = $keypairService->keypairFromKeys($this->project->api_key, $this->project->api_secret);
+        $keypair = $keypairService->keypairFromKeys($this->project->public_key, $this->project->secret_key);
         $data = $keypairService->decryptMessage(hex2bin($value), $keypair);
         return $data;
     }
