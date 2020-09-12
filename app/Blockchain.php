@@ -9,7 +9,7 @@ use App\Block;
 class Blockchain extends Model
 {
     protected $fillable = [
-        'name', 'version', 'difficulty', 'type'
+        'name', 'version', 'difficulty', 'type', 'valid'
     ];
 
     /**
@@ -25,7 +25,9 @@ class Blockchain extends Model
             'name' => Blockchain::createBlockchainName(),
             'version' => getenv('HELPPOCHAIN_CURRENT_VERSION'),
             'difficulty' => $difficulty,
+            'height' => 0,
             'type' => $type,
+            'valid' => TRUE,
         ];
 
         $blockchain = Blockchain::create($blockchain);
@@ -51,6 +53,23 @@ class Blockchain extends Model
 
         return $name;
     }
+    
+    /**
+     * Check if blockchain name already exists.
+     *
+     * @param string $name
+     * @return bool
+     */
+    public static function blockchainNameExists($name)
+    {
+        $blockchain = Blockchain::where('name', $name);
+
+        if ($blockchain) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Retrive the last block inserted.
@@ -68,23 +87,6 @@ class Blockchain extends Model
         $block = $block->latest()->first();
 
         return $block;
-    }
-    
-    /**
-     * Check if blockchain name already exists.
-     *
-     * @param string $name
-     * @return bool
-     */
-    public static function blockchainNameExists($name)
-    {
-        $blockchain = Blockchain::where('name', $name);
-
-        if ($blockchain) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -114,6 +116,66 @@ class Blockchain extends Model
         }
         
         return $latestBlock;
+    }
+    
+    /**
+     * Adds +1 to height
+     *
+     * @return \App\Blockchain
+     */
+    public function addHeight()
+    {
+        $this->height = $this->height + 1;
+        $this->save();
+
+        return $this->height;
+    }
+
+    /**
+     * Verify all blockchain
+     *
+     * @return \App\Blockchain
+     */
+    public function verifyBlockchainIntegrity ()
+    {   
+        $error = '';
+        foreach($this->blocks()->latest()->where('status','mined')->get() as $block) {
+            $actualBlockHashDb = $block->hash;
+            $actualBlockHashRebuilt = $block->buildHash($block->nonce, true);
+            $actualPreviousHash = $block->previous_hash;
+            $previousBlockHash = $block->getPreviousBlock();
+            
+            if (!$previousBlockHash) {
+                $previousBlockHash = 'genesis';
+            } else {
+                $previousBlockHash = $previousBlockHash->hash;
+            }
+            
+            if ($actualBlockHashDb !== $actualBlockHashRebuilt) {
+                $error = 'invalid 1';
+            }
+            
+            if ($actualPreviousHash !== $previousBlockHash) {
+                $error = 'invalid 2';
+            }
+
+            if(!empty($error)) {
+                $this->valid = FALSE;
+                $this->save();
+                
+                return $error;
+            }
+        }
+
+        return 'valid';
+    }
+
+    /**
+     * Get the valid attribute  
+     */
+    public function getValidAttribute($value)
+    {
+        return $value ? 'Válida' : 'Inválida';
     }
 
 

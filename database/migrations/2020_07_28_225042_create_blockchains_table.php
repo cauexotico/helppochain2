@@ -18,7 +18,9 @@ class CreateBlockchainsTable extends Migration
             $table->string('name', 64);
             $table->string('version',20);
             $table->integer('difficulty');
+            $table->integer('height')->default(0);
             $table->enum('type',['solo','shared']);
+            $table->boolean('valid');
             $table->timestamps();
             $table->softDeletes();
         });

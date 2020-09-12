@@ -92,8 +92,13 @@ class BlockController extends Controller
      */
     public function mine(Block $block)
     {
+        $integrity = $block->blockchain->verifyBlockchainIntegrity();
+        if ($integrity != 'valid') {
+            dd($integrity);
+        }
+        
         $block->mineBlock();
 
-        return view('blockchains.show')->with('blockchain', $block->blockchain);
+        return redirect()->route('blockchains.show', $block->blockchain);
     }
 }

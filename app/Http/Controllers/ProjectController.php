@@ -121,9 +121,13 @@ class ProjectController extends Controller
             'data' => 'json',
         ]);
 
+        if (!$project->blockchain->getRawOriginal('valid')) {
+            dd('Blockchain inválida');
+        }
+
         $transaction = $project->createTransaction($request->data);
 
         return redirect()->route('projects.show', $project->id)
-                        ->with('success','Project created successfully');
+                        ->with('success','Transaction created successfully');
     }
 }

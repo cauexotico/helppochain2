@@ -20,8 +20,10 @@
             ID: {{$blockchain->id}} <br>
             Name: {{$blockchain->name}} <br>
             Version: {{$blockchain->version}} <br>
+            Height: {{$blockchain->height}} <br>
             Difficulty: {{$blockchain->difficulty}} <br>
             Type: {{$blockchain->type}} <br>
+            Validade: {{$blockchain->valid}}
         </div>
 
         <hr>

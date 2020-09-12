@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Block extends Model
 {
     protected $fillable = [
-        'blockchain_id', 'miner', 'nonce', 'previous_hash', 'hash', 'status'
+        'blockchain_id', 'miner', 'nonce', 'height', 'previous_hash', 'hash', 'status'
     ];
 
     /**
@@ -17,17 +17,19 @@ class Block extends Model
      */
     public static function createGenesisBlock(Blockchain $blockchain)
     {   
+        $height = $blockchain->addHeight();
+
         $genesisBlock = [
             'blockchain_id' => $blockchain->id,
             'miner' => null,
-            'nonce' => '0',
+            'nonce' => 0,
+            'height' => $height,
             'previous_hash' => 'genesis',
             'hash' => '',
             'status' => 'not_mined',
         ];
 
         $genesisBlock = Block::create($genesisBlock);
-
         $genesisBlock->mineBlock();
         
         return $genesisBlock;
@@ -40,15 +42,19 @@ class Block extends Model
      */
     public static function createBlock(Blockchain $blockchain)
     {   
+        $height = $blockchain->addHeight();
+
         $block = [
             'blockchain_id' => $blockchain->id,
             'nonce' => '0',
+            'height' => $height,
             'previous_hash' => $blockchain->getLatestBlock()->hash,
             'hash' => '',
             'status' => 'not_mined',
         ];
 
         $block = Block::create($block);
+
 
         return $block;
     }
@@ -85,16 +91,27 @@ class Block extends Model
     public function createValidHash($nonce = 0)
     {
         do {
-            $unHashed = $this->blockchain_id . $nonce++ . $this->previous_hash . $this->hash . $this->status;
-            $hash = hash('sha256', $unHashed);
+            $hash = $this->buildHash($nonce++);
         } while (!$this->isValidHashDifficulty($hash));
 
         $data = [
             'nonce' => $nonce - 1,
             'hash' => $hash,
         ];
-
         return $data;
+    }
+
+    /**
+     * Build Hash
+     * 
+     * @param int $nonce
+     * @return $hash
+     */
+    public function buildHash($nonce)
+    {
+        $unHashed = $this->blockchain_id . $nonce . $this->previous_hash . $this->created_at;
+
+        return hash('sha256', $unHashed);
     }
 
     /**
@@ -159,6 +176,21 @@ class Block extends Model
         }
 
         return substr($hash, 0, $length) . '...';
+    }
+
+    /**
+     * Get Shortned Hash.
+     * 
+     * @param int $length
+     * @return string $hash
+     */
+    public function getPreviousBlock()
+    {  
+        if ($this->height - 1 == -1) {
+            return false;
+        }
+
+        return Block::where('height', $this->height - 1)->first();
     }
 
     /**

@@ -18,6 +18,7 @@ class CreateBlocksTable extends Migration
             $table->unsignedBigInteger('blockchain_id');
             $table->unsignedBigInteger('miner')->nullable();
             $table->unsignedBigInteger('nonce');
+            $table->integer('height');
             $table->char('previous_hash', 64);
             $table->char('hash', 64);
             $table->enum('status',['not_mined','mined']);

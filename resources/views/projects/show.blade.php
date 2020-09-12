@@ -31,14 +31,20 @@
         </div>
     </div>
 
-    <div class="col-12 card-helppo p-3 mt-3">
-        <h3>Add Transaction</h3>
-        <form method="POST" action="{{action('ProjectController@createTransaction', $project->id)}}">
-            @csrf
-            <input class="form-control" type="text" name="data" id="data" placeholder='{"name":"John"}'>
-            <input class="form-control btn btn-success mt-2" type="submit" value="Add Transaction">
-        </form>
-    </div>
+    
+        <div class="col-12 card-helppo p-3 mt-3">
+            <h3>Add Transaction</h3>
+            @if($project->blockchain->getRawOriginal('valid'))
+                <form method="POST" action="{{action('ProjectController@createTransaction', $project->id)}}">
+                    @csrf
+                    <input class="form-control" type="text" name="data" id="data" placeholder='{"name":"John"}'>
+                    <input class="form-control btn btn-success mt-2" type="submit" value="Add Transaction">
+                </form>
+            @else 
+                <h6 class="text-danger">This blockchain are blocked (invalid)</h6>
+            @endif
+        </div>
+
 
     <div class="col-12 card-helppo p-3 mt-3">
         <h3>Transactions</h3>
