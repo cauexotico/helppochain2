@@ -136,10 +136,16 @@ class Blockchain extends Model
      *
      * @return \App\Blockchain
      */
-    public function verifyBlockchainIntegrity ()
+    public function verifyBlockchainIntegrity ($actualBlock = null)
     {   
+        $blockchainBlocks = $this->blocks()->latest()->where('status','mined')->get();
+
+        //if ($actualBlock) {
+        //    $blockchainBlocks->push($actualBlock);
+        //}
+
         $error = '';
-        foreach($this->blocks()->latest()->where('status','mined')->get() as $block) {
+        foreach($blockchainBlocks as $block) {
             $actualBlockHashDb = $block->hash;
             $actualBlockHashRebuilt = $block->buildHash($block->nonce, true);
             $actualPreviousHash = $block->previous_hash;

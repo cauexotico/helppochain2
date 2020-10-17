@@ -92,7 +92,7 @@ class BlockController extends Controller
      */
     public function mine(Block $block)
     {
-        $integrity = $block->blockchain->verifyBlockchainIntegrity();
+        $integrity = $block->blockchain->verifyBlockchainIntegrity($block);
         if ($integrity != 'valid') {
             dd($integrity);
         }

@@ -37,6 +37,7 @@
                     <th scope="col">Status</th>
                     <th scope="col">Previous Hash</th>
                     <th scope="col">Hash</th>
+                    <th scope="col">Merkle Root</th>
                     <th></th>
                 </tr>
             </thead>
@@ -48,6 +49,7 @@
                         <td>{{$block->status}}</td>
                         <td>{{$block->getShortnedPreviousHash()}}</td>
                         <td>{{$block->getShortnedHash()}}</td>
+                        <td>{{$block->buildMerkleTreeRoot()}}</td>
                         <td>
                             @if($block->status == 'not_mined')
                                 <a href="{{route('block.mine', $block->id)}}">Mine</a>

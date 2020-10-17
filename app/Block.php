@@ -55,7 +55,6 @@ class Block extends Model
 
         $block = Block::create($block);
 
-
         return $block;
     }
 
@@ -191,6 +190,100 @@ class Block extends Model
         }
 
         return Block::where('height', $this->height - 1)->first();
+    }
+
+    /**
+     * Builds the Root of The Merkle Tree to store in block
+     * 
+     * @return string $hash
+     */
+    public function buildMerkleTreeRoot()
+    {  
+        $root = $this->buildAllNodesAndGetRoot();
+        
+        if (!$root) {
+            if ($this->previous_hash == 'genesis') {
+                return 'Genesis Block';
+            }
+            return 'No transactions found';            
+        }
+
+        return is_array($root) ? $root[0] : $root;
+    }
+
+    public function buildAllNodesAndGetRoot()
+    {
+        $transactionCount = $this->transactions->count();
+        if ($transactionCount == 0) {
+            //Verify if have transactions
+            return null;
+        }
+
+        if ($transactionCount == 1) {
+            //Verify if have only 1 transaction. If does, return itself hashed
+            return hash('sha256', $this->transactions[0]->hash);
+        }
+
+        foreach ($this->transactions as $transaction) {
+            //Build the first hash list aka leafs
+            $hashes[] = $transaction->hash;
+        }
+
+        do {
+            //Build each row until have 1 last hash, that is the Root
+            $hashes = $this->buildMerkleTreeLeafRow($hashes);
+        } while (count($hashes) != 1);
+        
+        return $hashes;
+    }
+
+    /**
+     * Builds the Row of Leafs
+     * 
+     * @return string
+     */
+    public function buildMerkleTreeLeafRow($hashes)
+    {  
+        $oldRow = $hashes;
+
+        if ($this->isEven($hashes)) {
+            $lastHash = array_pop($hashes);
+        }
+        
+        for ($i = 0; $i < count($hashes); $i += 2) {
+            $newRow[] = $this->buildMerkleTreeLeafNode($hashes[$i], $hashes[$i + 1]);
+        }
+        
+
+        if ($this->isEven($oldRow)) {
+            $newRow[] = $lastHash;
+        }
+        
+        return $newRow;
+    }
+    
+    /**
+     * Builds the Leaf Nodes of The Merkle Tree
+     * 
+     * @return string
+     */
+    public function buildMerkleTreeLeafNode($h1, $h2 = null)
+    {  
+        return hash('sha256', $h1 . $h2);
+    }
+
+    /**
+     * Check if the given array is even
+     * 
+     * @param array $hashes
+     * @return int
+     */
+    public function isEven($hashes = null) {
+        if (!$hashes) {
+            $hashes = $this->transactions;
+        }
+
+        return count($hashes) % 2;
     }
 
     /**
